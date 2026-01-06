@@ -75,8 +75,9 @@ public class AuthServiceimpl implements AuthService {
                 user.getId(),
                 user.getFullName(),
                 user.getEmail(),
-                user.getRole().name(),
-                token
+                token,
+                user.getRole().name()
+                
         );
     }
 }
