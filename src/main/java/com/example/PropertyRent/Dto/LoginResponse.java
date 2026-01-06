@@ -5,11 +5,10 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class RegisterResponse {
-
+public class LoginResponse {
     private Long id;
     private String fullName;
     private String email;
-    private String phone;
+    private String token;
     private String role;
 }
