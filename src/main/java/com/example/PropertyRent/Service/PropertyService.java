@@ -1,18 +1,20 @@
 package com.example.PropertyRent.Service;
 
-import com.example.PropertyRent.Entity.Property;
-import com.example.PropertyRent.Repositories.PropertyRepository;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.example.PropertyRent.Dto.PropertyResponse;
+import com.example.PropertyRent.DtoRequest.PropertyRequest;
 
-@Service
-@RequiredArgsConstructor
-public class PropertyService {
+import java.util.List;
 
-    private final PropertyRepository propertyRepository;
+public interface PropertyService {
 
-    public Property createProperty(Property property) {
-        return propertyRepository.save(property);
-    }
+    PropertyResponse create(PropertyRequest request, String email);
+
+    PropertyResponse update(Long id, PropertyRequest request, String email);
+
+    void delete(Long id, String email);
+
+    PropertyResponse getById(Long id);
+
+    List<PropertyResponse> getAll();
 }

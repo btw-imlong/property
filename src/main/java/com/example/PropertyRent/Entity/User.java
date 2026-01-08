@@ -11,33 +11,31 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
 
     @Column(name = "full_name", nullable = false, unique = true)
     private String fullName;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "phone")
     private String phone;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RoleType role;  // <--- enum
 
-    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    //huhuhuhuhuhu
     @PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
-        this.updatedAt = now;   // 👈 VERY IMPORTANT
+        this.updatedAt = now;
     }
 
     @PreUpdate

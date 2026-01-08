@@ -4,6 +4,7 @@ import com.example.PropertyRent.Dto.LoginResponse;
 import com.example.PropertyRent.Dto.RegisterResponse;
 import com.example.PropertyRent.DtoRequest.LoginRequest;
 import com.example.PropertyRent.DtoRequest.RegisterRequest;
+import com.example.PropertyRent.Entity.RoleType;
 import com.example.PropertyRent.Entity.User;
 import com.example.PropertyRent.Repositories.UserRepository;
 import com.example.PropertyRent.Security.JwtUtil;
@@ -39,13 +40,17 @@ public class AuthServiceimpl implements AuthService {
         user.setPhone(request.getPhone());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
+        // ✅ NORMAL REGISTER = USER
+        user.setRole(RoleType.USER);
+
         userRepository.save(user);
 
         return new RegisterResponse(
                 user.getId(),
                 user.getFullName(),
                 user.getEmail(),
-                user.getPhone()
+                user.getPhone(),
+                user.getRole().name()
         );
     }
 
@@ -54,26 +59,25 @@ public class AuthServiceimpl implements AuthService {
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() ->
-                        new ResponseStatusException(
-                                HttpStatus.UNAUTHORIZED,
-                                "Invalid email or password"
-                        )
+                        new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password")
                 );
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED,
-                    "Invalid email or password"
-            );
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password");
         }
 
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtUtil.generateToken(
+                user.getEmail(),
+                user.getRole().name()
+        );
 
         return new LoginResponse(
                 user.getId(),
                 user.getFullName(),
                 user.getEmail(),
-                token
+                token,
+                user.getRole().name()
+                
         );
     }
 }

@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LoginResponse {
+public class BecomeAgent {
     private Long id;
     private String fullName;
     private String email;
-    private String token;
+    private String phone;
     private String role;
 }
